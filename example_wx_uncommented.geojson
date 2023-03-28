@@ -1,21 +1,14 @@
 {
     "type": "FeatureCollection",
-    "COMMENT": "Locations should be the same across all sources in a single file",
-    "COMMENT": "Have to stick to GeoJSON format for this for it to work",
     "features": [
         {
-            "COMMENT": "This adds a bit of overhead, but I think it being compatible with GIS systems is worth it",
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "COMMENT": "GeoJSON specifies points are WGS84 [x, y(, optional z in m)]",
                 "coordinates": [-93, 49, 100]
             },
             "properties": {
-                "COMMENT": "GeoJSON lets you put whatever under the properties section, but we could define what needs to be here",
-                "COMMENT": "Name could be optionally included if linked to a specific station",
                 "name": "NMR",
-                "COMMENT": "If we're going to calculate indices from the weather then we need startup indices. The other option is to precalculate all FWI indices and include them",
                 "initial_indices": {
                     "as_of": "2007-06-30 12:00:00 EST",
                     "ffmc": 90,
@@ -23,11 +16,7 @@
                     "dc": 300
                 },
                 "data": {
-                    "COMMENT": "I think there's value in keeping the source of the data with the data",
                     "geps": [{
-                        "COMMENT": "I think this just collapses directly to the indices if it's not an ensemble?",
-                        "COMMENT": "But then we have to worry about some stupid situation where a model member has the same name as an index",
-                        "COMMENT": "So I think the correct thing to do is make it a list with one entry if there's no members",
                         "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
                         "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
                         "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
@@ -35,11 +24,7 @@
                         "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
                     }],
                     "naefs": {
-                        "COMMENT": "Want to ensure that format supports ensemble forecasts. Is members the right key to use whether it's ensemble or deterministic?",
-                        "COMMENT": "Ensemble members should have names/numbers, but if it's a deterministic forecast is this still a dictionary? If so, what's the key?",
-                        "COMMENT": "Or is this always a list, and the name is just an attribute? Might collide with indices name then I guess",
                         "0": {
-                            "COMMENT": "Seems redundant to use keys for these when they're all the same, but then we'd have to know the order otherwise",
                             "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
                             "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
                             "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
@@ -112,35 +97,23 @@
             }
         }
     ],
-    "COMMENT": "Including all non point-specific data in the FeatureCollection makes more sense than repeating it for each point",
     "indices": {
-        "COMMENT": "Either we need to include units and heights, or we need to pre-define them for all possible variables",
-        "COMMENT": "Or is there some reasonable way to have appropriate defaults if values not specified?",
         "temp": {"units": "C", "height": "2m"},
         "rh": {"units": "%", "height": "2m"},
         "ws": {"units": "km/h", "height": "10m", "note": "10 minute average"},
         "wd": {"units": "degrees", "height": "10m"},
-        "prec": {"units": "mm", "height": "surface"},
-        "COMMENT": "If you wanted FWI indices, you'd just do the same thing for them as well"
+        "prec": {"units": "mm", "height": "surface"}
     },
-    "COMMENT": "I think just parsing the whole interval string makes more sense than having it be a dictionary with quantity and units",
     "interval": "1 hour",
-    "COMMENT": "All sources should have data for the same time period",
     "start": "2007-07-01 00:00:00 GMT",
-    "COMMENT": "This isn't strictly required, because it can be calculated based on interval and indices array length, but good to have as a kind of checksum?",
     "end": "2007-07-01 11:00:00 GMT",
     "data": {
-        "COMMENT": "I feel like it makes sense to keep common attributes here, instead of duplicating for each point",
         "geps": {
-            "COMMENT": "The currency of the data is important, but may vary by source",
             "as_of": "2007-06-30 12:00:00 GMT"
         },
-        "COMMENT": "I think there's value in keeping the source of the data with the data",
         "naefs": {
-            "COMMENT": "May be useful to have full name available?",
             "name": "North American Ensemble Forecast System",
             "as_of": "2007-06-30 18:00:00 GMT",
-            "COMMENT": "Should we define what the members are so we can ensure all points have the same ones?",
             "members": ["0", "1", "control"]
         }
     }
