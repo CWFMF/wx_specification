@@ -1,0 +1,122 @@
+{
+    "COMMENT": "Locations should be the same across all sources in a single file",
+    "locations": {
+        "COMMENT": "If we don't have a crs in the file, then we have to define what every file needs to use for a crs",
+        "crs": "WGS84",
+        "COMMENT": "Locations may not have names, but they could if it's station data. Do we need to keep the names?",
+        "COMMENT": "Elevation units would need to be specified for file standard, or listed as part of key",
+        "COMMENT": "If locations aren't named, then order must be the same for all sources, as used in this section",
+        "points": [
+            {
+                "COMMENT": "Should we just use x & y for points, in case coordinate system isn't lat/long?",
+                "latitude": 49.0,
+                "longitude": -93.0,
+                "elevation": "200m"
+            },
+            {
+                "COMMENT": "Or do we just make points a list of [x, y, z] tuples?",
+                "latitude": 50.0,
+                "longitude": -94.0,
+                "COMMENT": "Elevation optional, or required?",
+            }
+        ]
+    },
+    "indices": {
+        "COMMENT": "Either we need to include units and heights, or we need to pre-define them for all possible variables",
+        "temp": {"units": "C", "height": "2m"},
+        "rh": {"units": "%", "height": "2m"},
+        "ws": {"units": "km/h", "height": "10m", "note": "10 minute average"},
+        "wd": {"units": "degrees", "height": "10m"},
+        "prec": {"units": "mm", "height": "surface"},
+        "COMMENT": "If you wanted FWI indices, you'd just do the same thing for them as well",
+    },
+    "COMMENT": "I think just parsing the whole interval string makes more sense than having it be a dictionary with quantity and units",
+    "interval": "1 hour",
+    "COMMENT": "All sources should have data for the same time period",
+    "start": "2007-07-01 00:00:00 GMT",
+    "COMMENT": "This isn't strictly required, because it can be calculated based on interval and indices array length, but good to have as a kind of checksum?",
+    "end": "2007-07-01 11:00:00 GMT",
+    "source": {
+        "geps": {
+            "COMMENT": "The currency of the data is important, but may vary by source",
+            "as_of": "2007-06-30 12:00:00 GMT",
+            "COMMENT": "These would have to be in the same order as defined in the locations section",
+            "COMMENT": "How should this collapse if this source isn't an ensemble?",
+            "points": [
+                    {
+                        "COMMENT": "Listing the index names for every point seems redundant - we could rely on indices order above and just use an array",
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    },
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    }
+            ]
+        },
+        "COMMENT": "I think there's value in keeping the source of the data with the data",
+        "naefs": {
+            "COMMENT": "May be ",
+            "name": "North American Ensemble Forecast System",
+            "as_of": "2007-06-30 18:00:00 GMT",
+            "COMMENT": "Want to ensure that format supports ensemble forecasts. Is members the right key to use whether it's ensemble or deterministic?",
+            "members": {
+                "COMMENT": "Ensemble members should have names/numbers, but if it's a deterministic forecast is this still a dictionary? If so, what's the key?",
+                "0": [
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    },
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    }
+                ],
+                "1": [
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    },
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    }
+                ],
+                "control": [
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    },
+                    {
+                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                    }
+                ]
+            }
+        }
+    }
+}
