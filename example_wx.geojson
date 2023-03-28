@@ -1,26 +1,46 @@
 {
+    "type": "FeatureCollection",
     "COMMENT": "Locations should be the same across all sources in a single file",
-    "locations": {
-        "COMMENT": "If we don't have a crs in the file, then we have to define what every file needs to use for a crs",
-        "crs": "WGS84",
-        "COMMENT": "Locations may not have names, but they could if it's station data. Do we need to keep the names?",
-        "COMMENT": "Elevation units would need to be specified for file standard, or listed as part of key",
-        "COMMENT": "If locations aren't named, then order must be the same for all sources, as used in this section",
-        "points": [
+    "COMMENT": "Have to stick to GeoJSON format for this for it to work",
+    "features": [
             {
-                "COMMENT": "Should we just use x & y for points, in case coordinate system isn't lat/long?",
-                "latitude": 49.0,
-                "longitude": -93.0,
-                "elevation": "200m"
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "COMMENT": "GeoJSON specifies points are WGS84 [x, y(, optional z in m)]",
+                    "coordinates": [-93, 49, 100]
+                },
+                "properties": {
+                    "COMMENT": "GeoJSON lets you put whatever under the properties section, but we could define what needs to be here",
+                    "COMMENT": "Name could be optionally included if linked to a specific station",
+                    "name": "NMR",
+                    "COMMENT": "If we're going to calculate indices from the weather then we need startup indices. The other option is to precalculate all FWI indices and include them",
+                    "initial_indices": {
+                        "as_of":"2007-06-30 12:00:00 EST",
+                        "ffmc": 90,
+                        "dmc": 56,
+                        "dc": 300
+                    }
+                }
             },
             {
-                "COMMENT": "Or do we just make points a list of [x, y, z] tuples?",
-                "latitude": 50.0,
-                "longitude": -94.0,
-                "COMMENT": "Elevation optional, or required?",
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-94, 50]
+                },
+                "properties": {
+                    "initial_indices": {
+                        "as_of":"2007-06-30 12:00:00 EST",
+                        "ffmc": 93,
+                        "dmc": 34,
+                        "dc": 113
+                    }
+                }
             }
-        ]
-    },
+    ],
+    "COMMENT": "We can either nest all this data under any key except 'properties', or we can have these keys at the top level of the object",
+    "COMMENT": "If we wanted to make it so that each Feature could be extracted and usable without the collection, then we'd have to put all this data in each point?",
     "indices": {
         "COMMENT": "Either we need to include units and heights, or we need to pre-define them for all possible variables",
         "temp": {"units": "C", "height": "2m"},
@@ -37,6 +57,7 @@
     "COMMENT": "This isn't strictly required, because it can be calculated based on interval and indices array length, but good to have as a kind of checksum?",
     "end": "2007-07-01 11:00:00 GMT",
     "source": {
+        "COMMENT": "The alternative to this is to put data for each model in the 'properties' of each point. If we do that then we'd still need the source metadata here, since it's constant and putting it in the points makes no sense?",
         "geps": {
             "COMMENT": "The currency of the data is important, but may vary by source",
             "as_of": "2007-06-30 12:00:00 GMT",
