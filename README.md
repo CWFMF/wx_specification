@@ -65,11 +65,30 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
       - probably better to define times similar to netcdf conventions so they aren't all strings?
       ```
       "time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      "start": "2007-07-01 00:00:00 GMT",
+      "end": "2007-07-16 18:00:00 GMT",
       ...
       "naefs": {
             "name": "North American Ensemble Forecast System",
             "as_of": "2007-06-30 18:00:00 GMT",
-            "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ...],
+            "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
+            "members": ["0", "1", "control"]
+      }
+      ```
+      - need to differentiate between source last update time (`FeatureCollection['data'][source]['as_of']` currently) and data period (`FeatureCollection['start']` and `FeatureCollection['end']` currently), so maybe:
+      ```
+      # NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01 00:00:00 GMT' as a reference)
+      "time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      # NOTE: probably much easier for a human to read if `start` is a string and not an offset from epoch time
+      "start": "2007-07-01 00:00:00 GMT",
+      "end": "2007-07-16 18:00:00 GMT",
+      ...
+      "naefs": {
+            "name": "North American Ensemble Forecast System",
+            # NOTE: again, much easier to read as a string than an offset from epoch. I don't think defining times in a source relative to the `as_of` time would be a good idea (i.e. if a time is hour 6, it should be hour 6 for every source) - although the counterpoint to that is that times for a model run are regularly referred to by their hour relative to when the model was run, and this would diverge from that standard)
+            "as_of": "2007-06-30 18:00:00 GMT",
+            # NOTE: this would not start at 0, because the data starts 6 hours after the model run start
+            "timestamps": [6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
             "members": ["0", "1", "control"]
       }
       ```
