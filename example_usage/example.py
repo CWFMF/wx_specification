@@ -1,10 +1,34 @@
 from json_format import read, save
 
+import random
+from generate_data import generate
+
 FILE_CONDENSED = '../example_wx_condensed.geojson'
 FILE_UNCOMMENTED = '../example_wx_uncommented.geojson'
 
 condensed = read(FILE_CONDENSED)
 uncommented = read(FILE_UNCOMMENTED)
+
+
+def randomize_wx():
+    # want to make 'realistic' weather
+    random.seed(0)
+    for feature in condensed['features']:
+        for source, members in feature['properties']['data'].items():
+            feature['properties']['data'][source] = [[generate(list(condensed['indices'].keys())[i], len(member[i])) for i in range(len(member))] for member in members]
+    # make sure it's the same for both file formats
+    random.seed(0)
+    for feature in uncommented['features']:
+        for source, members in feature['properties']['data'].items():
+            def gen_members(member):
+                return {k: generate(k, len(member[k])) for k in member.keys()}
+            if dict == type(feature['properties']['data'][source]):
+                feature['properties']['data'][source] = {k: gen_members(v) for k, v in members.items()}
+            else:
+                feature['properties']['data'][source] = [gen_members(v) for v in members]
+
+
+randomize_wx()
 
 # get indices for a single index for a single point
 feature = 0
