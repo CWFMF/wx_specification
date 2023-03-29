@@ -27,6 +27,52 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 - different intervals
   - different number of readings for same time period
     - feel like it makes the most sense to specify the interval and have a smaller array of data for larger intervals, instead of trying to get all streams to have the same interval and having to put a bunch of `null`s or something to make the arrays the same size
+    - some products have different frequencies depending on how far out the forecast is (e.g. NAEFS: 'Files are 3 hourly to 192, then 6 hourly to 384')
+      - have to have some way to define intervals for ranges of time, or have the option of just listing timestamps instead?
+      ```
+      "naefs": {
+            "name": "North American Ensemble Forecast System",
+            "as_of": "2007-06-30 18:00:00 GMT",
+            "interval": {
+                "2007-06-30 18:00:00 GMT": "3 hours",
+                "2007-07-08 18:00:00 GMT": "6 hours"
+            },
+            "members": ["0", "1", "control"]
+      }
+      ```
+      vs.
+      ```
+      "naefs": {
+            "name": "North American Ensemble Forecast System",
+            "as_of": "2007-06-30 18:00:00 GMT",
+            "timestamps": [
+                "2007-06-30 18:00:00 GMT",
+                "2007-06-30 21:00:00 GMT",
+                "2007-07-01 00:00:00 GMT",
+                ...
+                "2007-07-08 09:00:00 GMT",
+                "2007-07-08 12:00:00 GMT",
+                "2007-07-08 15:00:00 GMT",
+                "2007-07-08 18:00:00 GMT",
+                "2007-07-09 00:00:00 GMT",
+                "2007-07-09 06:00:00 GMT",
+                "2007-07-09 12:00:00 GMT",
+                ...
+            ],
+            "members": ["0", "1", "control"]
+      }
+      ```
+      - probably better to define times similar to netcdf conventions so they aren't all strings?
+      ```
+      "time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      ...
+      "naefs": {
+            "name": "North American Ensemble Forecast System",
+            "as_of": "2007-06-30 18:00:00 GMT",
+            "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ...],
+            "members": ["0", "1", "control"]
+      }
+      ```
 - different sources may be up to date as of different times
 - Any values defined for `FeatureCollection` apply to any streams that they aren't defined specifically within?
   - would be possible to have a value that's completely ignored, if set in `FeatureCollection` and each stream also defines it
