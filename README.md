@@ -29,69 +29,78 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     - feel like it makes the most sense to specify the interval and have a smaller array of data for larger intervals, instead of trying to get all streams to have the same interval and having to put a bunch of `null`s or something to make the arrays the same size
     - some products have different frequencies depending on how far out the forecast is (e.g. NAEFS: 'Files are 3 hourly to 192, then 6 hourly to 384')
       - have to have some way to define intervals for ranges of time, or have the option of just listing timestamps instead?
-      ```
-      "naefs": {
-            "name": "North American Ensemble Forecast System",
-            "as_of": "2007-06-30 18:00:00 GMT",
-            "interval": {
-                "2007-06-30 18:00:00 GMT": "3 hours",
-                "2007-07-08 18:00:00 GMT": "6 hours"
-            },
-            "members": ["0", "1", "control"]
-      }
-      ```
-      vs.
-      ```
-      "naefs": {
-            "name": "North American Ensemble Forecast System",
-            "as_of": "2007-06-30 18:00:00 GMT",
-            "timestamps": [
-                "2007-06-30 18:00:00 GMT",
-                "2007-06-30 21:00:00 GMT",
-                "2007-07-01 00:00:00 GMT",
-                ...
-                "2007-07-08 09:00:00 GMT",
-                "2007-07-08 12:00:00 GMT",
-                "2007-07-08 15:00:00 GMT",
-                "2007-07-08 18:00:00 GMT",
-                "2007-07-09 00:00:00 GMT",
-                "2007-07-09 06:00:00 GMT",
-                "2007-07-09 12:00:00 GMT",
-                ...
-            ],
-            "members": ["0", "1", "control"]
-      }
-      ```
+      >```
+      >"naefs": {
+      >      "name": "North American Ensemble Forecast System",
+      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "interval": {
+      >          "2007-06-30 18:00:00 GMT": "3 hours",
+      >          "2007-07-08 18:00:00 GMT": "6 hours"
+      >      },
+      >      "members": ["0", "1", "control"]
+      >}
+      >```
+      >vs.
+      >```
+      >"naefs": {
+      >      "name": "North American Ensemble Forecast System",
+      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "timestamps": [
+      >          "2007-06-30 18:00:00 GMT",
+      >          "2007-06-30 21:00:00 GMT",
+      >          "2007-07-01 00:00:00 GMT",
+      >          ...
+      >          "2007-07-08 09:00:00 GMT",
+      >          "2007-07-08 12:00:00 GMT",
+      >          "2007-07-08 15:00:00 GMT",
+      >          "2007-07-08 18:00:00 GMT",
+      >          "2007-07-09 00:00:00 GMT",
+      >          "2007-07-09 06:00:00 GMT",
+      >          "2007-07-09 12:00:00 GMT",
+      >          ...
+      >      ],
+      >      "members": ["0", "1", "control"]
+      >}
+      >```
       - probably better to define times similar to netcdf conventions so they aren't all strings?
-      ```
-      "time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
-      "start": "2007-07-01 00:00:00 GMT",
-      "end": "2007-07-16 18:00:00 GMT",
-      ...
-      "naefs": {
-            "name": "North American Ensemble Forecast System",
-            "as_of": "2007-06-30 18:00:00 GMT",
-            "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
-            "members": ["0", "1", "control"]
-      }
-      ```
+      >e.g.
+      >```
+      >"time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      >"start": "2007-07-01 00:00:00 GMT",
+      >"end": "2007-07-16 18:00:00 GMT",
+      >...
+      >"naefs": {
+      >      "name": "North American Ensemble Forecast System",
+      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
+      >      "members": ["0", "1", "control"]
+      >}
+      >```
       - need to differentiate between source last update time (`FeatureCollection['data'][source]['as_of']` currently) and data period (`FeatureCollection['start']` and `FeatureCollection['end']` currently), so maybe:
-      ```
-      # NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01 00:00:00 GMT' as a reference)
-      "time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
-      # NOTE: probably much easier for a human to read if `start` is a string and not an offset from epoch time
-      "start": "2007-07-01 00:00:00 GMT",
-      "end": "2007-07-16 18:00:00 GMT",
-      ...
-      "naefs": {
-            "name": "North American Ensemble Forecast System",
-            # NOTE: again, much easier to read as a string than an offset from epoch. I don't think defining times in a source relative to the `as_of` time would be a good idea (i.e. if a time is hour 6, it should be hour 6 for every source) - although the counterpoint to that is that times for a model run are regularly referred to by their hour relative to when the model was run, and this would diverge from that standard)
-            "as_of": "2007-06-30 18:00:00 GMT",
-            # NOTE: this would not start at 0, because the data starts 6 hours after the model run start
-            "timestamps": [6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
-            "members": ["0", "1", "control"]
-      }
-      ```
+      >---
+      >##### NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01 00:00:00 GMT' as a reference)
+      >```
+      >"time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      >```
+      >##### NOTE: probably much easier for a human to read if `start` is a string and not an offset from epoch time
+      >```
+      >"start": "2007-07-01 00:00:00 GMT",
+      >"end": "2007-07-16 18:00:00 GMT",
+      >...
+      >"naefs": {
+      >      "name": "North American Ensemble Forecast System",
+      >```
+      >##### NOTE: again, much easier to read as a string than an offset from epoch. I don't think defining times in a source relative to the `as_of` time would be a good idea (i.e. if a time is hour 6, it should be hour 6 for every source) - although the counterpoint to that is that times for a model run are regularly referred to by their hour relative to when the model was run, and this would diverge from that standard)
+      >```
+      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >```
+      >##### NOTE: this would not start at 0, because the data starts 6 hours after the model run start
+      >```
+      >      "timestamps": [6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
+      >      "members": ["0", "1", "control"]
+      >}
+      >```
+      >---
 - different sources may be up to date as of different times
 - Any values defined for `FeatureCollection` apply to any streams that they aren't defined specifically within?
   - would be possible to have a value that's completely ignored, if set in `FeatureCollection` and each stream also defines it
@@ -121,82 +130,82 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     - `FeatureCollection['indices'][index]['postprocessing']`?
 - indices names are repeated for every stream
   - could just use an array and knowing the index values from the indices defined for the FeatureCollection
-    e.g.:
-    ```
-    {
-        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
-        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
-        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
-        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
-        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
-    }
-    ```
-    vs.
-    ```
-    [
-        [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
-        [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
-        [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
-        [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
-        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
-    ]
-    ```
+    >e.g.:
+    >```
+    >{
+    >    "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+    >    "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+    >    "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+    >    "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+    >    "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+    >}
+    >```
+    >vs.
+    >```
+    >[
+    >    [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+    >    [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+    >    [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+    >    [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+    >    [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+    >]
+    >```
 
 - using dictionary for ensembles, but could also define keys in `FeatureCollection['data'][source]['members']` and just use an array
-    e.g.
-    ```
-    {
-        ...
-        "features": [
-            {
-                ...
-                "properties": {
-                    ...
-                    "data": {
-                        "naefs": {
-                            "0": {...},
-                            "1": {...},
-                            "control": {...}
-                        }
-                        ...
-                    }
-                    ...
-                }
-            }
-            ...
-        ]
-    }
-    ```
-    vs.
-    ```
-    {
-        ...
-        "features": [
-            {
-                ...
-                "properties": {
-                    ...
-                    "data": {
-                        "naefs": [
-                            {...},
-                            {...},
-                            {...}
-                        ]
-                        ...
-                    }
-                    ...
-                }
-            }
-            ...
-        ]
-        ...
-        "data": {
-            "naefs": {
-                "members": ["0", "1", "control"]
-            }
-        }
-    }
-    ```
+    >e.g.
+    >```
+    >{
+    >    ...
+    >    "features": [
+    >        {
+    >            ...
+    >            "properties": {
+    >                ...
+    >                "data": {
+    >                    "naefs": {
+    >                        "0": {...},
+    >                        "1": {...},
+    >                        "control": {...}
+    >                    }
+    >                    ...
+    >                }
+    >                ...
+    >            }
+    >        }
+    >        ...
+    >    ]
+    >}
+    >```
+    >vs.
+    >```
+    >{
+    >    ...
+    >    "features": [
+    >        {
+    >            ...
+    >            "properties": {
+    >                ...
+    >                "data": {
+    >                    "naefs": [
+    >                        {...},
+    >                        {...},
+    >                        {...}
+    >                    ]
+    >                    ...
+    >                }
+    >                ...
+    >            }
+    >        }
+    >        ...
+    >    ]
+    >    ...
+    >    "data": {
+    >        "naefs": {
+    >            "members": ["0", "1", "control"]
+    >        }
+    >    }
+    >}
+    >```
 
 
 ### FWI Indices
