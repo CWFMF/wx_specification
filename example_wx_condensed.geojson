@@ -3,18 +3,10 @@
     "features": [
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-93, 49, 100]
-            },
+            "geometry": {"type": "Point", "coordinates": [-93, 49, 100]},
             "properties": {
                 "name": "NMR",
-                "initial_indices": {
-                    "as_of": "2007-06-30 12:00:00 EST",
-                    "ffmc": 90,
-                    "dmc": 56,
-                    "dc": 300
-                },
+                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 90, "dmc": 56, "dc": 300},
                 "data": {
                     "geps": [
                         [
@@ -53,17 +45,9 @@
         },
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-94, 50]
-            },
+            "geometry": {"type": "Point", "coordinates": [-94, 50]},
             "properties": {
-                "initial_indices": {
-                    "as_of": "2007-06-30 12:00:00 EST",
-                    "ffmc": 85,
-                    "dmc": 32,
-                    "dc": 113
-                },
+                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 85, "dmc": 32, "dc": 113},
                 "data": {
                     "geps": [
                         [
@@ -112,9 +96,7 @@
     "start": "2007-07-01 00:00:00 GMT",
     "end": "2007-07-01 11:00:00 GMT",
     "data": {
-        "geps": {
-            "as_of": "2007-06-30 12:00:00 GMT"
-        },
+        "geps": {"as_of": "2007-06-30 12:00:00 GMT"},
         "naefs": {
             "name": "North American Ensemble Forecast System",
             "as_of": "2007-06-30 18:00:00 GMT",

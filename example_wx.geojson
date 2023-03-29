@@ -6,34 +6,28 @@
         {
             "COMMENT": "This adds a bit of overhead, but I think it being compatible with GIS systems is worth it",
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "COMMENT": "GeoJSON specifies points are WGS84 [x, y(, optional z in m)]",
-                "coordinates": [-93, 49, 100]
-            },
+            "COMMENT": "GeoJSON specifies points are WGS84 [x, y(, optional z in m)]",
+            "geometry": {"type": "Point", "coordinates": [-93, 49, 100]},
             "properties": {
                 "COMMENT": "GeoJSON lets you put whatever under the properties section, but we could define what needs to be here",
                 "COMMENT": "Name could be optionally included if linked to a specific station",
                 "name": "NMR",
                 "COMMENT": "If we're going to calculate indices from the weather then we need startup indices. The other option is to precalculate all FWI indices and include them",
-                "initial_indices": {
-                    "as_of": "2007-06-30 12:00:00 EST",
-                    "ffmc": 90,
-                    "dmc": 56,
-                    "dc": 300
-                },
+                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 90, "dmc": 56, "dc": 300},
                 "data": {
                     "COMMENT": "I think there's value in keeping the source of the data with the data",
-                    "geps": [{
-                        "COMMENT": "I think this just collapses directly to the indices if it's not an ensemble?",
-                        "COMMENT": "But then we have to worry about some stupid situation where a model member has the same name as an index",
-                        "COMMENT": "So I think the correct thing to do is make it a list with one entry if there's no members",
-                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
-                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
-                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
-                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
-                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
-                    }],
+                    "geps": [
+                        {
+                            "COMMENT": "I think this just collapses directly to the indices if it's not an ensemble?",
+                            "COMMENT": "But then we have to worry about some stupid situation where a model member has the same name as an index",
+                            "COMMENT": "So I think the correct thing to do is make it a list with one entry if there's no members",
+                            "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                            "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                            "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                            "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                            "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                        }
+                    ],
                     "naefs": {
                         "COMMENT": "Want to ensure that format supports ensemble forecasts. Is members the right key to use whether it's ensemble or deterministic?",
                         "COMMENT": "Ensemble members should have names/numbers, but if it's a deterministic forecast is this still a dictionary? If so, what's the key?",
@@ -66,25 +60,19 @@
         },
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-94, 50]
-            },
+            "geometry": {"type": "Point", "coordinates": [-94, 50]},
             "properties": {
-                "initial_indices": {
-                    "as_of": "2007-06-30 12:00:00 EST",
-                    "ffmc": 85,
-                    "dmc": 32,
-                    "dc": 113
-                },
+                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 85, "dmc": 32, "dc": 113},
                 "data": {
-                    "geps": [{
-                        "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
-                        "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
-                        "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
-                        "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
-                        "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
-                    }],
+                    "geps": [
+                        {
+                            "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
+                            "rh": [89, 88, 87, 87, 88, 89, 90, 91, 91, 90, 90, 90],
+                            "ws": [19.9, 18.2, 16.7, 16.5, 17.6, 16.9, 15.1, 15.6, 16.2, 15.5, 14.8, 14.4],
+                            "wd": [347, 349, 347, 340, 330, 329, 327, 321, 318, 317, 317, 310],
+                            "prec": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
+                        }
+                    ],
                     "naefs": {
                         "0": {
                             "temp": [-3.6, -3.4, -3.9, -5.5, -5.8, -6.8, -7.3, -7.6, -8.3, -9.6, -11.0, -11.1],
@@ -120,7 +108,7 @@
         "rh": {"units": "%", "height": "2m"},
         "ws": {"units": "km/h", "height": "10m", "note": "10 minute average"},
         "wd": {"units": "degrees", "height": "10m"},
-        "prec": {"units": "mm", "height": "surface"},
+        "prec": {"units": "mm", "height": "surface"}
         "COMMENT": "If you wanted FWI indices, you'd just do the same thing for them as well"
     },
     "COMMENT": "I think just parsing the whole interval string makes more sense than having it be a dictionary with quantity and units",
@@ -131,10 +119,8 @@
     "end": "2007-07-01 11:00:00 GMT",
     "data": {
         "COMMENT": "I feel like it makes sense to keep common attributes here, instead of duplicating for each point",
-        "geps": {
-            "COMMENT": "The currency of the data is important, but may vary by source",
-            "as_of": "2007-06-30 12:00:00 GMT"
-        },
+        "COMMENT": "The currency of the data is important, but may vary by source",
+        "geps": {"as_of": "2007-06-30 12:00:00 GMT"},
         "COMMENT": "I think there's value in keeping the source of the data with the data",
         "naefs": {
             "COMMENT": "May be useful to have full name available?",
