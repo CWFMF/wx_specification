@@ -150,7 +150,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     >    [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 1.0, 0.0, 0.0]
     >]
     >```
-
+    > - this seems clunky when there's an index without data for a certain source, and you need to use `null` in the array at that index
 - using dictionary for ensembles, but could also define keys in `FeatureCollection['data'][source]['members']` and just use an array
     >e.g.
     >```
