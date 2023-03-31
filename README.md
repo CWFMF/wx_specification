@@ -110,6 +110,9 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 ### Indices
 - if units and height aren't provided, then we need defaults for certain indices?
   - or whatever program is using the data needs to assume that it's for the correct units and height
+  - there needs to be some kind of consistency for this to make any sense
+    - if different models expect the same data with different names, then this is kind of pointless
+    - nice to make it generic, but seems like there needs to be some things already defined to ensure consistency
 - each source may be providing the closest point to the requested location
   - do we want to list the actual location in the source data, and not just the location that the data is supposed to represent?
     - would be useful to provide distance from requested location as well then?
