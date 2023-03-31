@@ -48,6 +48,12 @@ def generate_wd(n, initial=270, sigma=30):
 def generate_prec(n, initial=0, sigma=10):
     return [0.25 * x for x in generate_int(n, initial, sigma, 0)]
 
+def generate_coord():
+    v = [random.normalvariate(-96, 20), random.normalvariate(55, 10)]
+    if random.random() > 0.8:
+        v.append(random.randint(100, 1000))
+    return v
+
 GENERATORS = {
     'temp': generate_temp,
     'rh': generate_rh,

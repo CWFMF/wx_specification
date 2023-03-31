@@ -1,7 +1,8 @@
 from json_format import read, save
+import json
 
 import random
-from generate_data import generate
+from generate_data import generate, generate_coord
 
 FILE_CONDENSED = '../example_wx_condensed.geojson'
 FILE_UNCOMMENTED = '../example_wx_uncommented.geojson'
@@ -70,7 +71,6 @@ save(uncommented, FILE_UNCOMMENTED)
 
 
 def dumps_min(data):
-    import json
     return json.dumps(data, separators=(',', ':'))
 
 
@@ -109,6 +109,20 @@ MEMBERS = [str(x) for x in range(40)] + ["control"]
 
 condensed['data']['iefs']['members'] = MEMBERS
 uncommented['data']['iefs']['members'] = MEMBERS
+
+# just use dump and load to make a deep copy
+NUM_POINTS = 20
+def randomize_pts(data):
+    random.seed(0)
+    pt = json.loads(json.dumps(data['features'][0]))
+    def random_pt():
+        p = json.loads(json.dumps(pt))
+        p['geometry']['coordinates'] = generate_coord()
+        return p
+    data['features'] = [random_pt() for i in range(NUM_POINTS)]
+
+randomize_pts(condensed)
+randomize_pts(uncommented)
 
 randomize_wx()
 
