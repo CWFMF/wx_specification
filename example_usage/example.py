@@ -89,8 +89,6 @@ def make_min(data):
     return dumps_min(data)
 
 
-
-
 def overhead(data):
     # use condensed since it has null values for things where uncommented has no keys
     min_size = len(make_min(condensed))
@@ -100,20 +98,26 @@ def overhead(data):
 def summarize(name, data):
     return(f'Overhead for {name} format is {(overhead(data) * 100):0.2f}%')
 
-print(summarize("condensed", condensed))
-print(summarize("uncommented", uncommented))
+
+def test_size(fct=None, name=''):
+    if fct is not None:
+        fct(condensed)
+        fct(uncommented)
+    randomize_wx()
+    suffix = '' if 0 == len(name) else f'_{name}'
+    save(condensed, FILE_CONDENSED.replace('.geojson', f'{suffix}.geojson'))
+    save(uncommented, FILE_UNCOMMENTED.replace('.geojson', f'{suffix}.geojson'))
+    print(summarize(f'condensed {name}', condensed))
+    print(summarize(f'uncommmented {name}', uncommented))
 
 
-# try to figure out how much overhead there would be with an actual set of data
-MEMBERS = [str(x) for x in range(40)] + ["control"]
-
-condensed['data']['iefs']['members'] = MEMBERS
-uncommented['data']['iefs']['members'] = MEMBERS
-
-# just use dump and load to make a deep copy
-NUM_POINTS = 20
-def randomize_pts(data):
+def make_complete(data):
+    # try to figure out how much overhead there would be with an actual set of data
+    MEMBERS = [str(x) for x in range(40)] + ["control"]
+    # just use dump and load to make a deep copy
+    NUM_POINTS = 20
     random.seed(0)
+    data['data']['iefs']['members'] = MEMBERS
     pt = json.loads(json.dumps(data['features'][0]))
     def random_pt():
         p = json.loads(json.dumps(pt))
@@ -121,13 +125,16 @@ def randomize_pts(data):
         return p
     data['features'] = [random_pt() for i in range(NUM_POINTS)]
 
-randomize_pts(condensed)
-randomize_pts(uncommented)
 
-randomize_wx()
+def make_minimal(data):
+    # figure out overhead for really minimal dataset
+    data['features'] = [data['features'][0]]
+    d = data['features'][0]['properties']['data']
+    s = list(d.keys())[0]
+    data['features'][0]['properties']['data'] = {s: d[s]}
+    data['data'] = {s: data['data'][s]}
 
-save(condensed, FILE_CONDENSED.replace('.geojson', '_complete.geojson'))
-save(uncommented, FILE_UNCOMMENTED.replace('.geojson', '_complete.geojson'))
 
-print(summarize("condensed complete", condensed))
-print(summarize("uncommented complete", uncommented))
+test_size()
+test_size(make_complete, 'complete')
+test_size(make_minimal, 'minimal')

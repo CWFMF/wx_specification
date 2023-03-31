@@ -49,7 +49,7 @@ def generate_prec(n, initial=0, sigma=10):
     return [0.25 * x for x in generate_int(n, initial, sigma, 0)]
 
 def generate_coord():
-    v = [random.normalvariate(-96, 20), random.normalvariate(55, 10)]
+    v = [round(random.normalvariate(-96, 20), 2), round(random.normalvariate(55, 10), 2)]
     if random.random() > 0.8:
         v.append(random.randint(100, 1000))
     return v
