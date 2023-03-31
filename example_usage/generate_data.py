@@ -53,7 +53,8 @@ GENERATORS = {
     'rh': generate_rh,
     'ws': generate_ws,
     'wd': generate_wd,
-    'prec': generate_prec
+    'prec': generate_prec,
+    'wg': lambda n: generate_ws(n, initial=40, sigma=10)
 }
 
 

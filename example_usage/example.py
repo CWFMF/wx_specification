@@ -16,7 +16,7 @@ def randomize_wx():
     for feature in condensed['features']:
         for source, members in feature['properties']['data'].items():
             n = len(condensed['data'][source]['time']['values'])
-            feature['properties']['data'][source] = [[generate(list(condensed['indices'].keys())[i], n) for i in range(len(member))] for member in members]
+            feature['properties']['data'][source] = [[generate(list(condensed['indices'].keys())[i], n) if isinstance(member[i], list) else None for i in range(len(member))] for member in members]
     # make sure it's the same for both file formats
     random.seed(0)
     for feature in uncommented['features']:
