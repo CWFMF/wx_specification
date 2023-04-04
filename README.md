@@ -76,7 +76,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
       >      "members": ["0", "1", "control"]
       >}
       >```
-      - need to differentiate between source last update time (`FeatureCollection['data'][source]['as_of']` currently) and data period (`FeatureCollection['start']` and `FeatureCollection['end']` currently), so maybe:
+      - need to differentiate between source last update time (`FeatureCollection['sources'][source]['as_of']` currently) and data period (`FeatureCollection['start']` and `FeatureCollection['end']` currently), so maybe:
       >---
       >##### NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01 00:00:00 GMT' as a reference)
       >```
@@ -121,7 +121,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 ### Data streams
 - want to make things concise, but easy to use
   - most likely use case is probably dealing with all indices of a single stream for a single point
-    - with this spec, that would be done via `Feature['data'][source]`
+    - with this spec, that would be done via `Feature['sources'][source]`
         - would be an array if deterministic, or dictionary if ensemble
     - alternatively, could want to get:
       - all data for a single model, for all points: `FeatureCollection['features'][:]['data'][source]`
@@ -154,7 +154,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     >]
     >```
     > - this seems clunky when there's an index without data for a certain source, and you need to use `null` in the array at that index
-- using dictionary for ensembles, but could also define keys in `FeatureCollection['data'][source]['members']` and just use an array
+- using dictionary for ensembles, but could also define keys in `FeatureCollection['sources'][source]['members']` and just use an array
     >e.g.
     >```
     >{
@@ -202,7 +202,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     >        ...
     >    ]
     >    ...
-    >    "data": {
+    >    "sources": {
     >        "naefs": {
     >            "members": ["0", "1", "control"]
     >        }
