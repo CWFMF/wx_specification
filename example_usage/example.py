@@ -5,12 +5,18 @@ import os
 import random
 from generate_data import generate, generate_coord
 
-FILE_CONDENSED = '../example_wx_condensed.geojson'
-FILE_UNCOMMENTED = '../example_wx_uncommented.geojson'
+DIR_SCHEMAS = '../schemas'
+DIR_EXAMPLES = "../examples"
+
+FILE_CONDENSED = f'{DIR_EXAMPLES}/example_wx_condensed.geojson'
+FILE_UNCOMMENTED = f'{DIR_EXAMPLES}/example_wx_uncommented.geojson'
 
 
 def to_schema(f):
-    return f.replace('example_', '').replace('.geojson', '.json')
+    return f.replace(
+        'example_', '').replace(
+        '.geojson', '.json').replace(
+        DIR_EXAMPLES, DIR_SCHEMAS)
 
 
 def validate(data, file_schema, parent_schema=None):
@@ -19,7 +25,7 @@ def validate(data, file_schema, parent_schema=None):
     return jsonschema.validate(data,
                                read(file_schema),
                                resolver=jsonschema.RefResolver(
-        f'file:///{os.path.abspath("..")}/',
+        f'file:///{os.path.abspath(os.path.dirname(parent_schema))}/',
         read(parent_schema)))
 
 
