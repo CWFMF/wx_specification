@@ -1,0 +1,23 @@
+{
+    "title": "A type of value that is present for all members of all sources in this FeatureCollection",
+    "type": "object",
+    "required": [
+        "name",
+        "units",
+        "height"
+    ],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "units": {
+            "type": "string"
+        },
+        "height": {
+            "type": "string"
+        },
+        "note": {
+            "type": "string"
+        }
+    }
+}

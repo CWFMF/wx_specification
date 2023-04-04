@@ -1,0 +1,45 @@
+{
+    "title": "A data source that provides at least one member containing value for all indices",
+    "type": "object",
+    "required": [
+        "time"
+    ],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "time": {
+            "type": "object",
+            "required": [
+                "units",
+                "since",
+                "values"
+            ],
+            "properties": {
+                "units": {
+                    "type": "string"
+                },
+                "since": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "values": {
+                    "title": "Times represented by each array of values in the Feature data",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            }
+        },
+        "members": {
+            "title": "Names for data source members, in the order they appear in Feature data",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "allOf": [
+        {
+            "$ref": "https://geojson.org/schema/FeatureCollection.json"
+        }
+    ],
+    "required": [
+        "indices",
+        "sources"
+    ],
+    "properties": {
+        "features": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "properties": {
+                        "type": "object",
+                        "required": [
+                            "data"
+                        ],
+                        "properties": {
+                            "name": {
+                                "title": "Name associated with this Feature (e.g. weather station name)",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "indices": {
+            "title": "Types of values that each member of each source of each Feature will contain",
+            "type": "object",
+            "minItems": 1,
+            "patternProperties": {
+                "^.*$": {
+                    "$ref": "index.json"
+                }
+            },
+            "additionalProperties": false
+        },
+        "sources": {
+            "title": "Sources of data that each Feature will contain",
+            "type": "object",
+            "minItems": 1,
+            "patternProperties": {
+                "^.*$": {
+                    "$ref": "source.json"
+                }
+            },
+            "additionalProperties": false
+        },
+        "additionalProperties": false
+    }
+}
