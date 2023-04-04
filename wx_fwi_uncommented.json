@@ -1,0 +1,176 @@
+{
+    "$id": "wx_fwi_uncommented.json",
+    "title": "Extension specific to FWI and FBP modelling that defines certain indices and their units",
+    "allOf": [
+        {
+            "$ref": "wx_uncommented.json"
+        }
+    ],
+    "properties": {
+        "features": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "properties": {
+                        "type": "object",
+                        "required": [
+                            "initial_indices"
+                        ],
+                        "properties": {
+                            "initial_indices": {
+                                "title": "Startup FWI indices to use for calculations",
+                                "type": "object",
+                                "required": [
+                                    "as_of",
+                                    "ffmc",
+                                    "dmc",
+                                    "dc"
+                                ],
+                                "properties": {
+                                    "as_of": {
+                                        "title": "Timestamp for startup indices",
+                                        "type": "string",
+                                        "format": "datetime"
+                                    },
+                                    "ffmc": {
+                                        "title": "Fine Fuel Moisture Code",
+                                        "type": "number"
+                                    },
+                                    "dmc": {
+                                        "title": "Duff Moisture Code",
+                                        "type": "number"
+                                    },
+                                    "dc": {
+                                        "title": "Drought Code",
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "indices": {
+            "title": "Specific values required for FWI and FBP calculations with predefined names and units",
+            "type": "object",
+            "required": [
+                "temp",
+                "rh",
+                "ws",
+                "prec"
+            ],
+            "properties": {
+                "temp": {
+                    "title": "Temperature in Celcius at 2m required for FWI calculations",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Temperature"
+                        },
+                        "units": {
+                            "const": "C"
+                        },
+                        "height": {
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "rh": {
+                    "title": "Relative Humidity at 2m required for FWI calculations",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Relative Humidity"
+                        },
+                        "units": {
+                            "const": "%"
+                        },
+                        "height": {
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "ws": {
+                    "title": "10-minute Wind Speed in km/h at 10m required for FWI calculations",
+                    "type": "object",
+                    "required": [
+                        "note"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Wind Speed"
+                        },
+                        "units": {
+                            "const": "km/h"
+                        },
+                        "height": {
+                            "const": "10m"
+                        },
+                        "note": {
+                            "const": "10 minute average"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "prec": {
+                    "title": "24 hour (noon to noon LST) accumulation in mm required for FWI calculations",
+                    "type": "object",
+                    "required": [
+                        "note"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Precipitation"
+                        },
+                        "units": {
+                            "const": "mm"
+                        },
+                        "height": {
+                            "const": "surface"
+                        },
+                        "note": {
+                            "const": "Noon to noon (LST)"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "wd": {
+                    "title": "Wind Direction in degrees required for fire growth modelling",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Wind Direction"
+                        },
+                        "units": {
+                            "const": "degrees"
+                        },
+                        "height": {
+                            "const": "10m"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "wg": {
+                    "title": "Wind Gust Speed in km/h at 10m",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Wind Gust Speed"
+                        },
+                        "units": {
+                            "const": "km/h"
+                        },
+                        "height": {
+                            "const": "10m"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            }
+        }
+    }
+}

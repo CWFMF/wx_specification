@@ -97,7 +97,12 @@
             "note": "10 minute average"
         },
         "wd": {"name": "Wind Direction", "units": "degrees", "height": "10m"},
-        "prec": {"name": "Precipitation", "units": "mm", "height": "surface"},
+        "prec": {
+            "name": "Precipitation",
+            "units": "mm",
+            "height": "surface",
+            "note": "Noon to noon (LST)"
+        },
         "wg": {"name": "Wind Gust Speed", "units": "km/h", "height": "10m"}
     },
     "sources": {

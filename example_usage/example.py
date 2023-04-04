@@ -1,7 +1,7 @@
 from json_format import read, save
 import json
 import jsonschema
-
+import os
 import random
 from generate_data import generate, generate_coord
 
@@ -13,8 +13,14 @@ def to_schema(f):
     return f.replace('example_', '').replace('.geojson', '.json')
 
 
-def validate(data, file_schema):
-    return jsonschema.validate(data, read(file_schema))
+def validate(data, file_schema, parent_schema=None):
+    if parent_schema is None:
+        parent_schema = file_schema
+    return jsonschema.validate(data,
+                               read(file_schema),
+                               resolver=jsonschema.RefResolver(
+        f'file:///{os.path.abspath("..")}/',
+        read(parent_schema)))
 
 
 SCHEMA_CONDENSED = to_schema(FILE_CONDENSED)

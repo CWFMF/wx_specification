@@ -17,42 +17,12 @@
                     "properties": {
                         "type": "object",
                         "required": [
-                            "initial_indices",
                             "data"
                         ],
                         "properties": {
                             "name": {
                                 "title": "Name associated with this Feature (e.g. weather station name)",
                                 "type": "string"
-                            },
-                            "initial_indices": {
-                                "title": "Startup FWI indices to use for calculations",
-                                "type": "object",
-                                "required": [
-                                    "as_of",
-                                    "ffmc",
-                                    "dmc",
-                                    "dc"
-                                ],
-                                "properties": {
-                                    "as_of": {
-                                        "title": "Timestamp for startup indices",
-                                        "type": "string",
-                                        "format": "datetime"
-                                    },
-                                    "ffmc": {
-                                        "title": "Fine Fuel Moisture Code",
-                                        "type": "number"
-                                    },
-                                    "dmc": {
-                                        "title": "Duff Moisture Code",
-                                        "type": "number"
-                                    },
-                                    "dc": {
-                                        "title": "Drought Code",
-                                        "type": "number"
-                                    }
-                                }
                             },
                             "data": {
                                 "title": "Data associated with each data source specified in FeatureCollection",
