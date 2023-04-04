@@ -100,7 +100,7 @@
         "prec": {"name": "Precipitation", "units": "mm", "height": "surface"},
         "wg": {"name": "Wind Gust Speed", "units": "km/h", "height": "10m"}
     },
-    "data": {
+    "sources": {
         "idps": {
             "time": {
                 "units": "hours",

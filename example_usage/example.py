@@ -1,5 +1,6 @@
 from json_format import read, save
 import json
+import jsonschema
 
 import random
 from generate_data import generate, generate_coord
@@ -7,18 +8,32 @@ from generate_data import generate, generate_coord
 FILE_CONDENSED = '../example_wx_condensed.geojson'
 FILE_UNCOMMENTED = '../example_wx_uncommented.geojson'
 
+
+def to_schema(f):
+    return f.replace('example_', '').replace('.geojson', '.json')
+
+
+def validate(data, file_schema):
+    return jsonschema.validate(data, read(file_schema))
+
+
+SCHEMA_CONDENSED = to_schema(FILE_CONDENSED)
+SCHEMA_UNCOMMENTED = to_schema(FILE_UNCOMMENTED)
+
 condensed = read(FILE_CONDENSED)
 uncommented = read(FILE_UNCOMMENTED)
 
+validate(condensed, SCHEMA_CONDENSED)
+validate(uncommented, SCHEMA_UNCOMMENTED)
 
 def randomize_wx():
     # want to make 'realistic' weather
     random.seed(0)
     for feature in condensed['features']:
         for source in feature['properties']['data'].keys():
-            members = condensed['data'][source].get('members', [0])
+            members = condensed['sources'][source].get('members', [0])
             member = feature['properties']['data'][source][0]
-            n = len(condensed['data'][source]['time']['values'])
+            n = len(condensed['sources'][source]['time']['values'])
             def gen_member(member):
                 return [generate(list(condensed['indices'].keys())[i], n) if isinstance(member[i], list) else None for i in range(len(member))]
             feature['properties']['data'][source] = [gen_member(member) for i in range(len(members))]
@@ -26,8 +41,8 @@ def randomize_wx():
     random.seed(0)
     for feature in uncommented['features']:
         for source in feature['properties']['data'].keys():
-            n = len(uncommented['data'][source]['time']['values'])
-            members = condensed['data'][source].get('members', None)
+            n = len(uncommented['sources'][source]['time']['values'])
+            members = condensed['sources'][source].get('members', None)
             def gen_members(member):
                 return {k: generate(k, n) for k in member.keys()}
             if members is None:
@@ -109,6 +124,9 @@ def test_size(fct=None, name=''):
     save(uncommented, FILE_UNCOMMENTED.replace('.geojson', f'{suffix}.geojson'))
     print(summarize(f'condensed {name}', condensed))
     print(summarize(f'uncommmented {name}', uncommented))
+    validate(condensed, SCHEMA_CONDENSED)
+    validate(uncommented, SCHEMA_UNCOMMENTED)
+
 
 
 def make_complete(data):
@@ -117,7 +135,7 @@ def make_complete(data):
     # just use dump and load to make a deep copy
     NUM_POINTS = 20
     random.seed(0)
-    data['data']['iefs']['members'] = MEMBERS
+    data['sources']['iefs']['members'] = MEMBERS
     pt = json.loads(json.dumps(data['features'][0]))
     def random_pt():
         p = json.loads(json.dumps(pt))
@@ -132,7 +150,7 @@ def make_minimal(data):
     d = data['features'][0]['properties']['data']
     s = list(d.keys())[0]
     data['features'][0]['properties']['data'] = {s: d[s]}
-    data['data'] = {s: data['data'][s]}
+    data['sources'] = {s: data['sources'][s]}
 
 
 test_size()
