@@ -1,10 +1,7 @@
 {
     "allOf": [
         {
-            "$ref": "base_fwi.json"
-        },
-        {
-            "$ref": "wx_condensed.json"
+            "$ref": "cwfmf_fwi.json"
         }
     ],
     "properties": {

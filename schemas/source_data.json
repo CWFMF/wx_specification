@@ -1,0 +1,22 @@
+{
+    "title": "Data for all members of a given source, for a certain Feature",
+    "oneOf": [
+        {
+            "type": "array",
+            "items": {
+                "$ref": "member.json"
+            },
+            "minItems": 1
+        },
+        {
+            "type": "object",
+            "minProperties": 1,
+            "patternProperties": {
+                "^.*$": {
+                    "$ref": "member.json"
+                }
+            },
+            "additionalProperties": false
+        }
+    ]
+}

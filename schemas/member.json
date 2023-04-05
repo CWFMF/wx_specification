@@ -1,0 +1,43 @@
+{
+    "oneOf": [
+        {
+            "title": "Values for all indices defined in FeatureCollection for a member of a source",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "title": "Values for a single index over time",
+                "oneOf": [
+                    {
+                        "title": "Index not present for this source",
+                        "type": "null"
+                    },
+                    {
+                        "$ref": "#/$defs/values"
+                    }
+                ]
+            },
+            "additionalProperties": false
+        },
+        {
+            "title": "Values for indices defined in FeatureCollection for a member of a source that are present in this source",
+            "type": "object",
+            "minProperties": 1,
+            "patternProperties": {
+                "^.*$": {
+                    "$ref": "#/$defs/values"
+                }
+            },
+            "additionalProperties": false
+        }
+    ],
+    "$defs": {
+        "values": {
+            "title": "Values for a single index over time",
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minItems": 1
+        }
+    }
+}

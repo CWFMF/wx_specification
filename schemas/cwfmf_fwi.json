@@ -2,7 +2,7 @@
     "title": "Extension specific to FWI and FBP modelling that defines certain indices and their units",
     "allOf": [
         {
-            "$ref": "base.json"
+            "$ref": "cwfmf.json"
         }
     ],
     "properties": {

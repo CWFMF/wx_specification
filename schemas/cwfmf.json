@@ -23,6 +23,17 @@
                             "name": {
                                 "title": "Name associated with this Feature (e.g. weather station name)",
                                 "type": "string"
+                            },
+                            "data": {
+                                "title": "Data associated with each data source specified in FeatureCollection",
+                                "type": "object",
+                                "minProperties": 1,
+                                "patternProperties": {
+                                    "^.*$": {
+                                        "$ref": "source_data.json"
+                                    }
+                                },
+                                "additionalProperties": false
                             }
                         }
                     }

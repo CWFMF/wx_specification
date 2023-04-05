@@ -13,18 +13,14 @@ DIR_EXAMPLES = "../examples"
 
 FILE_CONDENSED = f'{DIR_EXAMPLES}/example_wx_condensed.geojson'
 FILE_UNCOMMENTED = f'{DIR_EXAMPLES}/example_wx_uncommented.geojson'
+FILE_MIXED = f'{DIR_EXAMPLES}/example_wx_mixed.geojson'
+FILE_DAILY = f'{DIR_EXAMPLES}/example_daily_condensed.geojson'
+SCHEMA_BASE = f'{DIR_SCHEMAS}/cwfmf.json'
+SCHEMA_FWI = f'{DIR_SCHEMAS}/cwfmf_fwi.json'
+SCHEMA_FWI_DAILY = f'{DIR_SCHEMAS}/cwfmf_fwi_daily.json'
 
 
-def to_schema(f):
-    return f.replace(
-        'example_', '').replace(
-        '.geojson', '.json').replace(
-        DIR_EXAMPLES, DIR_SCHEMAS)
-
-
-def validate(data, file_schema, parent_schema=None):
-    if parent_schema is None:
-        parent_schema = file_schema
+def validate(data, file_schema, parent_schema=SCHEMA_BASE):
     return jsonschema.validate(
         data,
         schema=read(file_schema),
@@ -35,22 +31,21 @@ def validate(data, file_schema, parent_schema=None):
                                 read(parent_schema)))
 
 
-SCHEMA_CONDENSED = to_schema(FILE_CONDENSED)
-SCHEMA_UNCOMMENTED = to_schema(FILE_UNCOMMENTED)
-
 condensed = read(FILE_CONDENSED)
 uncommented = read(FILE_UNCOMMENTED)
+mixed = read(FILE_MIXED)
+daily = read(FILE_DAILY)
 
-validate(condensed, SCHEMA_CONDENSED)
-validate(uncommented, SCHEMA_UNCOMMENTED)
-validate(condensed,
-         f'{DIR_SCHEMAS}/wx_fwi_condensed.json',
-         SCHEMA_CONDENSED)
-validate(read(f'{DIR_EXAMPLES}/example_daily_condensed.geojson'),
-         SCHEMA_CONDENSED)
-validate(read(f'{DIR_EXAMPLES}/example_daily_condensed.geojson'),
-         f'{DIR_SCHEMAS}/wx_fwi_daily_condensed.json',
-         SCHEMA_CONDENSED)
+# both formats should validate for the same schema now
+validate(condensed, SCHEMA_BASE)
+validate(condensed, SCHEMA_FWI)
+validate(uncommented, SCHEMA_BASE)
+validate(uncommented, SCHEMA_FWI)
+validate(mixed, SCHEMA_BASE)
+validate(mixed, SCHEMA_FWI)
+validate(daily, SCHEMA_BASE)
+validate(daily, SCHEMA_FWI)
+validate(daily, SCHEMA_FWI_DAILY)
 
 def randomize_wx():
     # want to make 'realistic' weather
@@ -150,8 +145,10 @@ def test_size(fct=None, name=''):
     save(uncommented, FILE_UNCOMMENTED.replace('.geojson', f'{suffix}.geojson'))
     print(summarize(f'condensed {name}', condensed))
     print(summarize(f'uncommmented {name}', uncommented))
-    validate(condensed, SCHEMA_CONDENSED)
-    validate(uncommented, SCHEMA_UNCOMMENTED)
+    validate(condensed, SCHEMA_BASE)
+    validate(uncommented, SCHEMA_BASE)
+    validate(condensed, SCHEMA_FWI)
+    validate(uncommented, SCHEMA_FWI)
 
 
 
