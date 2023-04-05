@@ -15,6 +15,7 @@ FILE_CONDENSED = f'{DIR_EXAMPLES}/example_wx_condensed.geojson'
 FILE_UNCOMMENTED = f'{DIR_EXAMPLES}/example_wx_uncommented.geojson'
 FILE_MIXED = f'{DIR_EXAMPLES}/example_wx_mixed.geojson'
 FILE_DAILY = f'{DIR_EXAMPLES}/example_daily_condensed.geojson'
+FILE_FWI_STREAMS = f'{DIR_EXAMPLES}/example_wx_fwi_streams.geojson'
 SCHEMA_BASE = f'{DIR_SCHEMAS}/cwfmf.json'
 SCHEMA_FWI = f'{DIR_SCHEMAS}/cwfmf_fwi.json'
 SCHEMA_FWI_DAILY = f'{DIR_SCHEMAS}/cwfmf_fwi_daily.json'
@@ -35,6 +36,7 @@ condensed = read(FILE_CONDENSED)
 uncommented = read(FILE_UNCOMMENTED)
 mixed = read(FILE_MIXED)
 daily = read(FILE_DAILY)
+fwi_streams = read(FILE_FWI_STREAMS)
 
 # both formats should validate for the same schema now
 validate(condensed, SCHEMA_BASE)
@@ -43,6 +45,7 @@ validate(uncommented, SCHEMA_BASE)
 validate(uncommented, SCHEMA_FWI)
 validate(mixed, SCHEMA_BASE)
 validate(mixed, SCHEMA_FWI)
+validate(fwi_streams, SCHEMA_FWI)
 validate(daily, SCHEMA_BASE)
 validate(daily, SCHEMA_FWI)
 validate(daily, SCHEMA_FWI_DAILY)

@@ -6,56 +6,6 @@
         }
     ],
     "properties": {
-        "features": {
-            "items": {
-                "properties": {
-                    "properties": {
-                        "required": [
-                            "initial_indices"
-                        ],
-                        "properties": {
-                            "initial_indices": {
-                                "title": "Startup FWI indices to use for calculations",
-                                "type": "object",
-                                "required": [
-                                    "as_of",
-                                    "ffmc",
-                                    "dmc",
-                                    "dc"
-                                ],
-                                "properties": {
-                                    "as_of": {
-                                        "title": "Timestamp for startup indices",
-                                        "type": "string",
-                                        "oneOf": [
-                                            {
-                                                "format": "date-time"
-                                            },
-                                            {
-                                                "title": "Assume 12:00LST if only date is given",
-                                                "format": "date"
-                                            }
-                                        ]
-                                    },
-                                    "ffmc": {
-                                        "title": "Fine Fuel Moisture Code",
-                                        "type": "number"
-                                    },
-                                    "dmc": {
-                                        "title": "Duff Moisture Code",
-                                        "type": "number"
-                                    },
-                                    "dc": {
-                                        "title": "Drought Code",
-                                        "type": "number"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "indices": {
             "title": "Specific values required for FWI and FBP calculations with predefined names and units",
             "type": "object",
@@ -173,8 +123,128 @@
                         }
                     },
                     "additionalProperties": false
+                },
+                "ffmc": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Fine Fuel Moisture Code"
+                        },
+                        "units": {
+                            "title": "`1` indicates a unitless measurement",
+                            "const": "1"
+                        },
+                        "height": {
+                            "title": "Not sure what this should be, so match `temp` for now",
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "dmc": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Duff Moisture Code"
+                        },
+                        "units": {
+                            "title": "`1` indicates a unitless measurement",
+                            "const": "1"
+                        },
+                        "height": {
+                            "title": "Not sure what this should be, so match `temp` for now",
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "dc": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "const": "Drought Code"
+                        },
+                        "units": {
+                            "title": "`1` indicates a unitless measurement",
+                            "const": "1"
+                        },
+                        "height": {
+                            "title": "Not sure what this should be, so match `temp` for now",
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
                 }
             }
         }
-    }
+    },
+    "oneOf": [
+        {
+            "title": "Startup indices are provided",
+            "properties": {
+                "features": {
+                    "items": {
+                        "properties": {
+                            "properties": {
+                                "required": [
+                                    "initial_indices"
+                                ],
+                                "properties": {
+                                    "initial_indices": {
+                                        "title": "Startup FWI indices to use for calculations",
+                                        "type": "object",
+                                        "required": [
+                                            "as_of",
+                                            "ffmc",
+                                            "dmc",
+                                            "dc"
+                                        ],
+                                        "properties": {
+                                            "as_of": {
+                                                "title": "Timestamp for startup indices",
+                                                "type": "string",
+                                                "oneOf": [
+                                                    {
+                                                        "format": "date-time"
+                                                    },
+                                                    {
+                                                        "title": "Assume 12:00LST if only date is given",
+                                                        "format": "date"
+                                                    }
+                                                ]
+                                            },
+                                            "ffmc": {
+                                                "title": "Fine Fuel Moisture Code",
+                                                "type": "number"
+                                            },
+                                            "dmc": {
+                                                "title": "Duff Moisture Code",
+                                                "type": "number"
+                                            },
+                                            "dc": {
+                                                "title": "Drought Code",
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "FWI indices are provided",
+            "properties": {
+                "indices": {
+                    "required": [
+                        "ffmc",
+                        "dmc",
+                        "dc"
+                    ]
+                }
+            }
+        }
+    ]
 }
