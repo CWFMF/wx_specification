@@ -13,7 +13,7 @@
                 "COMMENT": "Name could be optionally included if linked to a specific station",
                 "name": "NMR",
                 "COMMENT": "If we're going to calculate indices from the weather then we need startup indices. The other option is to precalculate all FWI indices and include them",
-                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 90, "dmc": 56, "dc": 300},
+                "initial_indices": {"as_of": "2007-06-30T12:00:00-05:00", "ffmc": 90, "dmc": 56, "dc": 300},
                 "data": {
                     "COMMENT": "I think there's value in keeping the source of the data with the data",
                     "idps": [
@@ -65,7 +65,7 @@
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [-94, 50]},
             "properties": {
-                "initial_indices": {"as_of": "2007-06-30 12:00:00 EST", "ffmc": 85, "dmc": 32, "dc": 113},
+                "initial_indices": {"as_of": "2007-06-30T12:00:00-05:00", "ffmc": 85, "dmc": 32, "dc": 113},
                 "data": {
                     "idps": [
                         {
@@ -118,17 +118,23 @@
             "note": "10 minute average"
         },
         "wd": {"name": "Wind Direction", "units": "degrees", "height": "10m"},
-        "prec": {"name": "Precipitation", "units": "mm", "height": "surface"},
+        "prec": {
+            "name": "Precipitation",
+            "units": "mm",
+            "height": "surface",
+            "note": "Noon to noon (LST)"
+        },
         "wg": {"name": "Wind Gust Speed", "units": "km/h", "height": "10m"}
         "COMMENT": "If you wanted FWI indices, you'd just do the same thing for them as well"
     },
-    "data": {
+    "sources": {
         "COMMENT": "I feel like it makes sense to keep common attributes here, instead of duplicating for each point",
         "COMMENT": "If we use the model origin as the epoch time then that doubles as the currency of the data?",
         "idps": {
             "time": {
-                "units": "hours",
-                "since": "2007-06-30 12:00:00 GMT",
+                "COMMENT": "`duration` and `date-time` format are defined by RFC3339",
+                "units": "PT1H",
+                "since": "2007-06-30T12:00:00Z",
                 "COMMENT": "Defining times in relation to the model origin makes the most sense, because that's how model data time is normally referenced",
                 "COMMENT": "So these times would be from '2006-07-01 00:00:00 GMT' to '2006-07-02 09:00:00 GMT'",
                 "values": [12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45]
@@ -139,8 +145,8 @@
             "COMMENT": "May be useful to have full name available?",
             "name": "Imaginary Ensemble Forecast System",
             "time": {
-                "units": "hours",
-                "since": "2007-06-30 18:00:00 GMT",
+                "units": "PT1H",
+                "since": "2007-06-30T18:00:00Z",
                 "COMMENT": "just pretend this is 6h interval to show the difference",
                 "COMMENT": "These times would be from '2006-07-01 00:00:00 GMT' to '2006-07-02 06:00:00 GMT'",
                 "values": [6, 12, 18, 24, 30, 36]
