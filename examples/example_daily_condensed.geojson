@@ -107,7 +107,7 @@
             "name": "Precipitation",
             "units": "mm",
             "height": "surface",
-            "note": "Noon to noon (LST)"
+            "note": "Accumulation during previous interval"
         },
         "wg": {"name": "Wind Gust Speed", "units": "km/h", "height": "10m"}
     },

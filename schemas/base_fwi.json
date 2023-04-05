@@ -137,7 +137,7 @@
                             "const": "surface"
                         },
                         "note": {
-                            "const": "Noon to noon (LST)"
+                            "const": "Accumulation during previous interval"
                         }
                     },
                     "additionalProperties": false
