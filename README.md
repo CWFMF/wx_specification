@@ -27,7 +27,7 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 - different intervals
   - different number of readings for same time period
     - feel like it makes the most sense to specify the interval and have a smaller array of data for larger intervals, instead of trying to get all streams to have the same interval and having to put a bunch of `null`s or something to make the arrays the same size
-    - RFC3339[https://www.rfc-editor.org/rfc/rfc3339.txt] seems to be required standard for `date`, `date-time`, and `duration` formats to work
+    - [RFC3339](https://www.rfc-editor.org/rfc/rfc3339.txt) seems to be required standard for `date`, `date-time`, and `duration` formats to work
       - "1 hour" is defined at "PT1H"
       - "1 day" is defined at "P1D"
     - some products have different frequencies depending on how far out the forecast is (e.g. NAEFS: 'Files are 3 hourly to 192, then 6 hourly to 384')
