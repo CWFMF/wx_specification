@@ -41,15 +41,7 @@
             }
         },
         "indices": {
-            "title": "Types of values that each member of each source of each Feature will contain",
-            "type": "object",
-            "minItems": 1,
-            "patternProperties": {
-                "^.*$": {
-                    "$ref": "index.json"
-                }
-            },
-            "additionalProperties": false
+            "$ref": "indices.json"
         },
         "sources": {
             "title": "Sources of data that each Feature will contain",
