@@ -7,12 +7,9 @@
     ],
     "properties": {
         "features": {
-            "type": "array",
             "items": {
-                "type": "object",
                 "properties": {
                     "properties": {
-                        "type": "object",
                         "required": [
                             "initial_indices"
                         ],
@@ -30,7 +27,15 @@
                                     "as_of": {
                                         "title": "Timestamp for startup indices",
                                         "type": "string",
-                                        "format": "datetime"
+                                        "oneOf": [
+                                            {
+                                                "format": "date-time"
+                                            },
+                                            {
+                                                "title": "Assume 12:00LST if only date is given",
+                                                "format": "date"
+                                            }
+                                        ]
                                     },
                                     "ffmc": {
                                         "title": "Fine Fuel Moisture Code",

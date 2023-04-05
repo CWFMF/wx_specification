@@ -6,7 +6,7 @@
             "geometry": {"type": "Point", "coordinates": [-93, 49, 100]},
             "properties": {
                 "name": "NMR",
-                "initial_indices": {"as_of": "2007-06-30T12:00:00-05:00", "ffmc": 90, "dmc": 56, "dc": 300},
+                "initial_indices": {"as_of": "2007-06-30", "ffmc": 90, "dmc": 56, "dc": 300},
                 "data": {
                     "idps": [
                         [
@@ -51,7 +51,7 @@
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [-94, 50]},
             "properties": {
-                "initial_indices": {"as_of": "2007-06-30T12:00:00-05:00", "ffmc": 85, "dmc": 32, "dc": 113},
+                "initial_indices": {"as_of": "2007-06-30", "ffmc": 85, "dmc": 32, "dc": 113},
                 "data": {
                     "idps": [
                         [
@@ -114,17 +114,17 @@
     "sources": {
         "idps": {
             "time": {
-                "units": "PT1H",
-                "since": "2007-06-30T12:00:00Z",
-                "values": [12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45]
+                "units": "P1D",
+                "since": "2007-06-30",
+                "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
             }
         },
         "iefs": {
             "name": "Imaginary Ensemble Forecast System",
             "time": {
-                "units": "PT1H",
-                "since": "2007-06-30T18:00:00Z",
-                "values": [6, 12, 18, 24, 30, 36]
+                "units": "P1D",
+                "since": "2007-06-30",
+                "values": [0, 1, 2, 3, 4, 5]
             },
             "members": ["0", "1", "control"]
         }

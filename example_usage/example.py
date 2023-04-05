@@ -1,5 +1,8 @@
 from json_format import read, save
 import json
+# import these to ensure they're installed so jsonschema will use them
+import rfc3339_validator
+import isoduration
 import jsonschema
 import os
 import random
@@ -22,11 +25,14 @@ def to_schema(f):
 def validate(data, file_schema, parent_schema=None):
     if parent_schema is None:
         parent_schema = file_schema
-    return jsonschema.validate(data,
-                               read(file_schema),
-                               resolver=jsonschema.RefResolver(
-        f'file:///{os.path.abspath(os.path.dirname(parent_schema))}/',
-        read(parent_schema)))
+    return jsonschema.validate(
+        data,
+        schema=read(file_schema),
+        cls=jsonschema.Draft202012Validator,
+        format_checker=jsonschema.Draft202012Validator.FORMAT_CHECKER,
+        resolver=jsonschema.RefResolver(
+                f'file:///{os.path.abspath(os.path.dirname(parent_schema))}/',
+                                read(parent_schema)))
 
 
 SCHEMA_CONDENSED = to_schema(FILE_CONDENSED)
@@ -37,6 +43,14 @@ uncommented = read(FILE_UNCOMMENTED)
 
 validate(condensed, SCHEMA_CONDENSED)
 validate(uncommented, SCHEMA_UNCOMMENTED)
+validate(condensed,
+         f'{DIR_SCHEMAS}/wx_fwi_condensed.json',
+         SCHEMA_CONDENSED)
+validate(read(f'{DIR_EXAMPLES}/example_daily_condensed.geojson'),
+         SCHEMA_CONDENSED)
+validate(read(f'{DIR_EXAMPLES}/example_daily_condensed.geojson'),
+         f'{DIR_SCHEMAS}/wx_fwi_daily_condensed.json',
+         SCHEMA_CONDENSED)
 
 def randomize_wx():
     # want to make 'realistic' weather

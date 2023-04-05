@@ -1,0 +1,45 @@
+{
+    "allOf": [
+        {
+            "$ref": "base_fwi.json"
+        },
+        {
+            "$ref": "wx_condensed.json"
+        }
+    ],
+    "properties": {
+        "features": {
+            "items": {
+                "properties": {
+                    "properties": {
+                        "properties": {
+                            "initial_indices": {
+                                "properties": {
+                                    "as_of": {
+                                        "title": "Require date for 12:00LST if using daily indices",
+                                        "format": "date"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "sources": {
+            "patternProperties": {
+                "^.*$": {
+                    "properties": {
+                        "time": {
+                            "properties": {
+                                "units": {
+                                    "const": "P1D"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

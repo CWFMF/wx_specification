@@ -27,15 +27,18 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 - different intervals
   - different number of readings for same time period
     - feel like it makes the most sense to specify the interval and have a smaller array of data for larger intervals, instead of trying to get all streams to have the same interval and having to put a bunch of `null`s or something to make the arrays the same size
+    - RFC3339[https://www.rfc-editor.org/rfc/rfc3339.txt] seems to be required standard for `date`, `date-time`, and `duration` formats to work
+      - "1 hour" is defined at "PT1H"
+      - "1 day" is defined at "P1D"
     - some products have different frequencies depending on how far out the forecast is (e.g. NAEFS: 'Files are 3 hourly to 192, then 6 hourly to 384')
       - have to have some way to define intervals for ranges of time, or have the option of just listing timestamps instead?
       >```
       >"naefs": {
       >      "name": "North American Ensemble Forecast System",
-      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "as_of": "2007-06-30T18:00:00Z",
       >      "interval": {
-      >          "2007-06-30 18:00:00 GMT": "3 hours",
-      >          "2007-07-08 18:00:00 GMT": "6 hours"
+      >          "2007-06-30T18:00:00Z": "PT3H",
+      >          "2007-07-08T18:00:00Z": "PT6H"
       >      },
       >      "members": ["0", "1", "control"]
       >}
@@ -44,19 +47,19 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
       >```
       >"naefs": {
       >      "name": "North American Ensemble Forecast System",
-      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "as_of": "2007-06-30T18:00:00Z",
       >      "timestamps": [
-      >          "2007-06-30 18:00:00 GMT",
-      >          "2007-06-30 21:00:00 GMT",
-      >          "2007-07-01 00:00:00 GMT",
+      >          "2007-06-30T18:00:00Z",
+      >          "2007-06-30T21:00:00Z",
+      >          "2007-07-01T00:00:00Z",
       >          ...
-      >          "2007-07-08 09:00:00 GMT",
-      >          "2007-07-08 12:00:00 GMT",
-      >          "2007-07-08 15:00:00 GMT",
-      >          "2007-07-08 18:00:00 GMT",
-      >          "2007-07-09 00:00:00 GMT",
-      >          "2007-07-09 06:00:00 GMT",
-      >          "2007-07-09 12:00:00 GMT",
+      >          "2007-07-08T09:00:00Z",
+      >          "2007-07-08T12:00:00Z",
+      >          "2007-07-08T15:00:00Z",
+      >          "2007-07-08T18:00:00Z",
+      >          "2007-07-09T00:00:00Z",
+      >          "2007-07-09T06:00:00Z",
+      >          "2007-07-09T12:00:00Z",
       >          ...
       >      ],
       >      "members": ["0", "1", "control"]
@@ -65,34 +68,34 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
       - probably better to define times similar to netcdf conventions so they aren't all strings?
       >e.g.
       >```
-      >"time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
-      >"start": "2007-07-01 00:00:00 GMT",
-      >"end": "2007-07-16 18:00:00 GMT",
+      >"time": {"units": "PT1H", "since": "2007-06-30T18:00:00Z"}
+      >"start": "2007-07-01T00:00:00Z",
+      >"end": "2007-07-16T18:00:00Z",
       >...
       >"naefs": {
       >      "name": "North American Ensemble Forecast System",
-      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "as_of": "2007-06-30T18:00:00Z",
       >      "timestamps": [0, 3, 6, 9, 12, ..., 183, 186, 189, 192, 198, 204, 210, ..., 372, 378, 384],
       >      "members": ["0", "1", "control"]
       >}
       >```
       - need to differentiate between source last update time (`FeatureCollection['sources'][source]['as_of']` currently) and data period (`FeatureCollection['start']` and `FeatureCollection['end']` currently), so maybe:
       >---
-      >##### NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01 00:00:00 GMT' as a reference)
+      >##### NOTE: `FeatureCollection['time']['since']` (epoch time) could be completely independent of start/end time (e.g. could use '2000-01-01T00:00:00Z' as a reference)
       >```
-      >"time": {"units": "hours", "since": "2007-06-30 18:00:00 GMT"}
+      >"time": {"units": "PT1H", "since": "2007-06-30T18:00:00Z"}
       >```
       >##### NOTE: probably much easier for a human to read if `start` is a string and not an offset from epoch time
       >```
-      >"start": "2007-07-01 00:00:00 GMT",
-      >"end": "2007-07-16 18:00:00 GMT",
+      >"start": "2007-07-01T00:00:00Z",
+      >"end": "2007-07-16T18:00:00Z",
       >...
       >"naefs": {
       >      "name": "North American Ensemble Forecast System",
       >```
       >##### NOTE: again, much easier to read as a string than an offset from epoch. I don't think defining times in a source relative to the `as_of` time would be a good idea (i.e. if a time is hour 6, it should be hour 6 for every source) - although the counterpoint to that is that times for a model run are regularly referred to by their hour relative to when the model was run, and this would diverge from that standard)
       >```
-      >      "as_of": "2007-06-30 18:00:00 GMT",
+      >      "as_of": "2007-06-30T18:00:00Z",
       >```
       >##### NOTE: this would not start at 0, because the data starts 6 hours after the model run start
       >```

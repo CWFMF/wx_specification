@@ -17,11 +17,11 @@
             ],
             "properties": {
                 "units": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "since": {
-                    "type": "string",
-                    "format": "datetime"
+                    "type": "string"
                 },
                 "values": {
                     "title": "Times represented by each array of values in the Feature data",
@@ -31,7 +31,36 @@
                         "type": "number"
                     }
                 }
-            }
+            },
+            "additionalProperties": false,
+            "oneOf": [
+                {
+                    "title": "If duration is 1 day then use date",
+                    "properties": {
+                        "units": {
+                            "title": "Only deal with specifically 1 day, and not equivalent values",
+                            "const": "P1D"
+                        },
+                        "since": {
+                            "format": "date"
+                        }
+                    }
+                },
+                {
+                    "title": "If duration is anything other than 1 day then use date-time",
+                    "properties": {
+                        "units": {
+                            "not": {
+                                "title": "Only deal with specifically 1 day, and not equivalent values",
+                                "const": "P1D"
+                            }
+                        },
+                        "since": {
+                            "format": "date-time"
+                        }
+                    }
+                }
+            ]
         },
         "members": {
             "title": "Names for data source members, in the order they appear in Feature data",
