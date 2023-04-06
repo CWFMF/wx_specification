@@ -2,7 +2,7 @@
     "title": "Types of values that each member of each source of each Feature will contain",
     "type": "object",
     "minItems": 1,
-    "patternProperties": {
+    "properties": {
         "title": "Predefined indices don't require all fields, but if they're included they must match",
         "temp": {
             "title": "Temperature in Celcius at 2m required for FWI calculations",
@@ -156,31 +156,30 @@
                 }
             },
             "additionalProperties": false
-        },
-        "^(temp|rh|ws|wd|prec|wg|ffmc|dmc|dc){0}$": {
-            "title": "User-defined indices require all fields so they are properly interpreted",
-            "type": "object",
-            "required": [
-                "name",
-                "units",
-                "height"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "string"
-                },
-                "height": {
-                    "type": "string"
-                },
-                "note": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
         }
     },
-    "additionalProperties": false
+    "additionalProperties": {
+        "title": "User-defined indices require all fields so they are properly interpreted",
+        "type": "object",
+        "required": [
+            "name",
+            "units",
+            "height"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "units": {
+                "type": "string"
+            },
+            "height": {
+                "type": "string"
+            },
+            "note": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false
+    }
 }
