@@ -1,5 +1,6 @@
 {
     "title": "Extension specific to FWI and FBP modelling that defines certain indices and their units",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "allOf": [
         {
             "$ref": "cwfmf.json"

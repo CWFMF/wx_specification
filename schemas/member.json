@@ -1,4 +1,6 @@
 {
+    "title": "A member of a data source",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
         {
             "title": "Values for all indices defined in FeatureCollection for a member of a source",

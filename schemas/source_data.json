@@ -1,5 +1,6 @@
 {
     "title": "Data for all members of a given source, for a certain Feature",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
         {
             "type": "array",

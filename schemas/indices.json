@@ -1,5 +1,6 @@
 {
     "title": "Types of values that each member of each source of each Feature will contain",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "minItems": 1,
     "properties": {

@@ -1,5 +1,6 @@
 {
     "title": "A data source that provides at least one member containing value for all indices",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "required": [
         "time"

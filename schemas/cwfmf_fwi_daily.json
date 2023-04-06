@@ -1,4 +1,6 @@
 {
+    "title": "Daily weather with FWI indices",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "allOf": [
         {
             "$ref": "cwfmf_fwi.json"
