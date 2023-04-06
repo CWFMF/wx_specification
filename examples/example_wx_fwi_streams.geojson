@@ -116,15 +116,17 @@
         }
     ],
     "indices": {
-        "temp": {"name": "Temperature", "units": "C", "height": "2m"},
-        "rh": {"name": "Relative Humidity", "units": "%", "height": "2m"},
+        "temp": true,
+        "rh": "Relative Humidity",
         "ws": {
             "name": "Wind Speed",
             "units": "km/h",
             "height": "10m",
             "note": "10 minute average"
         },
-        "wd": {"name": "Wind Direction", "units": "degrees", "height": "10m"},
+        "wd": {
+            "name": "Wind Direction"
+        },
         "prec": {
             "name": "Precipitation",
             "units": "mm",
@@ -133,20 +135,10 @@
         },
         "wg": {"name": "Wind Gust Speed", "units": "km/h", "height": "10m"},
         "ffmc": {
-            "name": "Fine Fuel Moisture Code",
-            "units": "1",
-            "height": "2m"
+            "name": "Fine Fuel Moisture Code"
         },
-        "dmc": {
-            "name": "Duff Moisture Code",
-            "units": "1",
-            "height": "2m"
-        },
-        "dc": {
-            "name": "Drought Code",
-            "units": "1",
-            "height": "2m"
-        }
+        "dmc": true,
+        "dc": "Drought Code"
     },
     "sources": {
         "idps": {

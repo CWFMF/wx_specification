@@ -6,156 +6,249 @@
         "title": "Predefined indices don't require all fields, but if they're included they must match",
         "temp": {
             "title": "Temperature in Celcius at 2m required for FWI calculations",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Temperature"
                 },
-                "units": {
-                    "const": "C"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Temperature"
+                        },
+                        "units": {
+                            "const": "C"
+                        },
+                        "height": {
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "2m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "rh": {
             "title": "Relative Humidity at 2m required for FWI calculations",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Relative Humidity"
                 },
-                "units": {
-                    "const": "%"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Relative Humidity"
+                        },
+                        "units": {
+                            "const": "%"
+                        },
+                        "height": {
+                            "const": "2m"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "2m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "ws": {
             "title": "10-minute Wind Speed in km/h at 10m required for FWI calculations",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Wind Speed"
                 },
-                "units": {
-                    "const": "km/h"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Wind Speed"
+                        },
+                        "units": {
+                            "const": "km/h"
+                        },
+                        "height": {
+                            "const": "10m"
+                        },
+                        "note": {
+                            "const": "10 minute average"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "10m"
-                },
-                "note": {
-                    "const": "10 minute average"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "prec": {
             "title": "Accumulation in mm for previous period is required for FWI calculations",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Precipitation"
                 },
-                "units": {
-                    "const": "mm"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Precipitation"
+                        },
+                        "units": {
+                            "const": "mm"
+                        },
+                        "height": {
+                            "const": "surface"
+                        },
+                        "note": {
+                            "const": "Accumulation during previous interval"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "surface"
-                },
-                "note": {
-                    "const": "Accumulation during previous interval"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "wd": {
             "title": "Wind Direction in degrees required for fire growth modelling",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Wind Direction"
                 },
-                "units": {
-                    "const": "degrees"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Wind Direction"
+                        },
+                        "units": {
+                            "const": "degrees"
+                        },
+                        "height": {
+                            "const": "10m"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "10m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "wg": {
             "title": "Wind Gust Speed in km/h at 10m",
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Wind Gust Speed"
                 },
-                "units": {
-                    "const": "km/h"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Wind Gust Speed"
+                        },
+                        "units": {
+                            "const": "km/h"
+                        },
+                        "height": {
+                            "const": "10m"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "const": "10m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "ffmc": {
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Fine Fuel Moisture Code"
                 },
-                "units": {
-                    "title": "`1` indicates a unitless measurement",
-                    "const": "1"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Fine Fuel Moisture Code"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "title": "Not sure what this should be, so match `temp` for now",
-                    "const": "2m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "dmc": {
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Duff Moisture Code"
                 },
-                "units": {
-                    "title": "`1` indicates a unitless measurement",
-                    "const": "1"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Duff Moisture Code"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "title": "Not sure what this should be, so match `temp` for now",
-                    "const": "2m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         },
         "dc": {
-            "type": "object",
-            "properties": {
-                "name": {
+            "oneOf": [
+                {
                     "const": "Drought Code"
                 },
-                "units": {
-                    "title": "`1` indicates a unitless measurement",
-                    "const": "1"
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Drought Code"
+                        }
+                    },
+                    "additionalProperties": false
                 },
-                "height": {
-                    "title": "Not sure what this should be, so match `temp` for now",
-                    "const": "2m"
+                {
+                    "const": true
                 }
-            },
-            "additionalProperties": false
+            ]
         }
     },
     "additionalProperties": {
