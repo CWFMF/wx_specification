@@ -250,6 +250,94 @@
                     "const": true
                 }
             ]
+        },
+        "isi": {
+            "oneOf": [
+                {
+                    "const": "Initial Spread Index"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Initial Spread Index"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
+        },
+        "bui": {
+            "oneOf": [
+                {
+                    "const": "Buildup Index"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Buildup Index"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
+        },
+        "fwi": {
+            "oneOf": [
+                {
+                    "const": "Fire Weather Index"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Fire Weather Index"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
+        },
+        "dsr": {
+            "oneOf": [
+                {
+                    "const": "Daily Severity Rating"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Daily Severity Rating"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
         }
     },
     "additionalProperties": {
