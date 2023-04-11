@@ -253,12 +253,10 @@
         }
     },
     "additionalProperties": {
-        "title": "User-defined indices require all fields so they are properly interpreted",
+        "title": "User-defined indices are expected to have enough information to be interpretable",
         "type": "object",
         "required": [
-            "name",
-            "units",
-            "height"
+            "name"
         ],
         "properties": {
             "name": {

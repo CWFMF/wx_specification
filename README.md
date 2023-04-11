@@ -119,7 +119,47 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 - each source may be providing the closest point to the requested location
   - do we want to list the actual location in the source data, and not just the location that the data is supposed to represent?
     - would be useful to provide distance from requested location as well then?
-
+- decided to allow indices to be defined only by name, and to predefine some indices by key
+  - if user is defining index, then they must include enough information for it to be usable
+  - we can predefine what values certain keys have to have, and then allow users to just use a `bool` for saying they're include
+    - define in a way that fields are optional, so you can include specifics, but they have to match predefined values
+    >---
+    >e.g.
+    >```
+    >    "temp": {
+    >        "title": "Temperature in Celcius at 2m required for FWI calculations",
+    >        "oneOf": [
+    >            {
+    >                "const": "Temperature"
+    >            },
+    >            {
+    >                "type": "object",
+    >                "required": [
+    >                    "name"
+    >                ],
+    >                "properties": {
+    >                    "name": {
+    >                        "const": "Temperature"
+    >                    },
+    >                    "units": {
+    >                        "const": "C"
+    >                    },
+    >                    "height": {
+    >                        "const": "2m"
+    >                    }
+    >                },
+    >                "additionalProperties": false
+    >            },
+    >            {
+    >                "const": true
+    >            }
+    >        ]
+    >    },
+    >```
+    >- this will allow `temp` to be defined either as `true` or `Temperature` to include to include it, or it can speficy other attributes, but they must match what has been pre-defined
+    >---
+- hard to know when to stop when it comes to predefining things
+  - could use all the acronyms that fbp uses (`cfb`, `csi`, `bfi`, etc.), but is that too much?
 
 ### Data streams
 - want to make things concise, but easy to use
