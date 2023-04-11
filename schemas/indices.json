@@ -338,6 +338,85 @@
                     "const": true
                 }
             ]
+        },
+        "cfb": {
+            "oneOf": [
+                {
+                    "const": "Crown Fraction Burned"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Crown Fraction Burned"
+                        },
+                        "units": {
+                            "const": "%/100"
+                        },
+                        "note": {
+                            "const": "By the head fire"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
+        },
+        "cfc": {
+            "oneOf": [
+                {
+                    "const": "Crown Fuel Consumption"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Crown Fuel Consumption"
+                        },
+                        "units": {
+                            "const": "kg/m^2"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
+        },
+        "ros": {
+            "title": "Head Fire Rate of Spread",
+            "oneOf": [
+                {
+                    "const": "Head Fire Rate of Spread"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "const": "Head Fire Rate of Spread"
+                        },
+                        "units": {
+                            "const": "m/min"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "const": true
+                }
+            ]
         }
     },
     "additionalProperties": {

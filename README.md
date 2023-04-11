@@ -160,6 +160,8 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
     >---
 - hard to know when to stop when it comes to predefining things
   - could use all the acronyms that fbp uses (`cfb`, `csi`, `bfi`, etc.), but is that too much?
+- I think pre-definitions can't be done in extensions, because `indices.json` is being referenced via composition, and it also requires other indices to be `objects` with a `name`, so you can't do the overrides for `bool` or `const`
+
 
 ### Data streams
 - want to make things concise, but easy to use
