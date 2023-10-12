@@ -19,7 +19,8 @@ There are various tradeoffs that can be made for efficiency or accuracy of repre
 
 ### Actual vs Forecast
 - just handled by specifying data source as observations?
-  - what about Actual vs Estimated, and if that's different on a per-value, per-index basis, or per-source basis?
+  - what about Actual observations vs Estimated observations, and if that's different on a per-value, per-index basis, or per-source basis?
+    - decided to not worry about marking individual observations as estimates, because the 'model' for the observations would be something like 'Provincial Observations from XX', and it would use whatever they're saying is their official observation values
 
 
 ### Different frequencies for different streams
