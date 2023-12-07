@@ -113,6 +113,8 @@
     },
     "sources": {
         "idps": {
+            "reference-time": "2007-06-30T12:00:00Z",
+            "datetime": "2007-06-30T12:00:00Z/2007-07-11T12:00:00Z/P1D",
             "time": {
                 "units": "P1D",
                 "since": "2007-06-30",
@@ -121,6 +123,8 @@
         },
         "iefs": {
             "name": "Imaginary Ensemble Forecast System",
+            "reference-time": "2007-06-30T12:00:00Z",
+            "datetime": "2007-06-30T12:00:00Z/2007-07-05T12:00:00Z/P1D",
             "time": {
                 "units": "P1D",
                 "since": "2007-06-30",

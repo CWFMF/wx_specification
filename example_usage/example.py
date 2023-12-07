@@ -1,12 +1,19 @@
-from json_format import read, save
+import datetime
 import json
-# import these to ensure they're installed so jsonschema will use them
-import rfc3339_validator
-import isoduration
-import jsonschema
 import os
 import random
+import re
+
+import dateutil
+import iso8601
+import isoduration
+import jsonschema
+# import these to ensure they're installed so jsonschema will use them
+import rfc3339_validator
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
 from generate_data import generate, generate_coord
+from json_format import read, save
 
 DIR_SCHEMAS = '../schemas'
 DIR_EXAMPLES = "../examples"
@@ -19,6 +26,63 @@ FILE_FWI_STREAMS = f'{DIR_EXAMPLES}/example_wx_fwi_streams.geojson'
 SCHEMA_BASE = f'{DIR_SCHEMAS}/cwfmf.json'
 SCHEMA_FWI = f'{DIR_SCHEMAS}/cwfmf_fwi.json'
 SCHEMA_FWI_DAILY = f'{DIR_SCHEMAS}/cwfmf_fwi_daily.json'
+
+
+def parse_duration(duration):
+    #    RFC3339
+    #    dur-second        = 1*DIGIT "S"
+    #    dur-minute        = 1*DIGIT "M" [dur-second]
+    #    dur-hour          = 1*DIGIT "H" [dur-minute]
+    #    dur-time          = "T" (dur-hour / dur-minute / dur-second)
+    #    dur-day           = 1*DIGIT "D"
+    #    dur-week          = 1*DIGIT "W"
+    #    dur-month         = 1*DIGIT "M" [dur-day]
+    #    dur-year          = 1*DIGIT "Y" [dur-month]
+    #    dur-date          = (dur-day / dur-month / dur-year) [dur-time]
+    #    duration          = "P" (dur-date / dur-time / dur-week)
+    # examples:
+    #   P5Y2M3W1DT7H3M8S
+    #   P5Y2M3W1D
+    #   PT7H3M8S
+    # techinically not exactly right because you can't have anything after the T if it's not there
+    date, time = re.fullmatch("P([^T]*)?T?(.*)?", duration).groups()
+    def parse_components(regex, s):
+        return [int(x[:-1]) if x else 0 for x in re.fullmatch(regex, s).groups()]
+    # don't need to check if date or time are empty since they just match nothing if they area
+    years, months, weeks, days = parse_components("(\d+Y)?(\d+M)?(\d+W)?(\d+D)?", date)
+    hours, minutes, seconds = parse_components("(\d+H)?(\d+M)?(\d+S)?", time)
+    return relativedelta(years=years, months=months, weeks=weeks, days=days, hours=hours, minutes=minutes, seconds=seconds)
+
+
+def parse_intervals(intervals):
+    # seems like there should be a standard library for this
+    i = []
+    for span in intervals.split(","):
+        cur = []
+        begin, end, duration = span.split("/")
+        d = parser.parse(begin)
+        e = parser.parse(end)
+        delta = parse_duration(duration)
+        while d <= e:
+            cur.append(d)
+            d += delta
+        i.append(cur)
+    return i
+
+
+def check_times(src):
+    intervals = parse_intervals(src['datetime'])
+    assert 1 == len(intervals)
+    reference_time = src['time']['since']
+    assert reference_time == src['reference-time']
+    epoch = parser.parse(reference_time)
+    units = parse_duration(src['time']['units'])
+    values = [epoch + (x * units) for x in src['time']['values']]
+    n = len(values)
+    parsed = intervals[0]
+    assert n == len(parsed)
+    assert values == parsed
+    return parsed
 
 
 def validate(data, file_schema, parent_schema=SCHEMA_BASE):
@@ -50,14 +114,16 @@ validate(daily, SCHEMA_BASE)
 validate(daily, SCHEMA_FWI)
 validate(daily, SCHEMA_FWI_DAILY)
 
+
 def randomize_wx():
     # want to make 'realistic' weather
     random.seed(0)
     for feature in condensed['features']:
         for source in feature['properties']['data'].keys():
-            members = condensed['sources'][source].get('members', [0])
+            src = condensed['sources'][source]
+            members = src.get('members', [0])
             member = feature['properties']['data'][source][0]
-            n = len(condensed['sources'][source]['time']['values'])
+            n = len(check_times(src))
             def gen_member(member):
                 return [generate(list(condensed['indices'].keys())[i], n) if isinstance(member[i], list) else None for i in range(len(member))]
             feature['properties']['data'][source] = [gen_member(member) for i in range(len(members))]
@@ -65,8 +131,9 @@ def randomize_wx():
     random.seed(0)
     for feature in uncommented['features']:
         for source in feature['properties']['data'].keys():
-            n = len(uncommented['sources'][source]['time']['values'])
-            members = condensed['sources'][source].get('members', None)
+            src = uncommented['sources'][source]
+            n = len(check_times(src))
+            members = src.get('members', None)
             def gen_members(member):
                 return {k: generate(k, n) for k in member.keys()}
             if members is None:
